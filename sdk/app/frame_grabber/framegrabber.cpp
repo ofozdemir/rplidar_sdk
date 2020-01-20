@@ -60,13 +60,18 @@ int Run(LPTSTR /*lpstrCmdLine*/ = NULL, int nCmdShow = SW_SHOWDEFAULT)
     }
     else 
     {
-        if (connection_info.network.protocol == "UDP")
+        std::string network_protocol(connection_info.network.protocol);
+
+        if (network_protocol.find("UDP")!=-1)
         {
+            if (!LidarMgr::GetInstance().onConnectUdp(connection_info.network.ip, connection_info.network.port)) {
+                MessageBox(NULL, "Cannot bind to the udp server.", "Error", MB_OK);
+            }
 
         }
         else
         {
-            TCPChannelSelDlg tcp_channel;
+           // TCPChannelSelDlg tcp_channel;
             if (!LidarMgr::GetInstance().onConnectTcp(connection_info.network.ip, connection_info.network.port)) {
                 MessageBox(NULL, "Cannot bind to the tcp server.", "Error", MB_OK);
                 return false;
@@ -74,34 +79,6 @@ int Run(LPTSTR /*lpstrCmdLine*/ = NULL, int nCmdShow = SW_SHOWDEFAULT)
         }
     
     }
-
-    /*CSerialSelDlg serialsel;
-
-    if (serialsel.DoModal() == IDCANCEL) return 0;
-
-	if (serialsel.isUseNetworing())
-	{
-		TCPChannelSelDlg tcp_channel_sel;
-
-		if (tcp_channel_sel.DoModal() == IDCANCEL) {
-            return false;
-        }
-
-        if (!LidarMgr::GetInstance().onConnectTcp(tcp_channel_sel.getIp().c_str(), tcp_channel_sel.getPort())) {
-            MessageBox(NULL, "Cannot bind to the tcp server.", "Error", MB_OK);
-            return false;
-        }
-	}
-	else
-	{
-		char serialpath[255];
-		sprintf(serialpath, "\\\\.\\com%d", serialsel.getSelectedID()+1);
-    
-		if (!LidarMgr::GetInstance().onConnect(serialpath, serialsel.getSelectedBaudRate())) {
-			MessageBox(NULL, "Cannot bind to the specified port.", "Error", MB_OK);
-			return -1;
-		}
-	}*/
 
     if(wndMain.CreateEx() == NULL)
     {

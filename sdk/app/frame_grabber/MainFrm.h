@@ -32,7 +32,14 @@
 
 #include "drvlogic\lidarmgr.h"
 
+#define FILE_MENU     0
+#define COMMAND_MENU  1
+#define OPTION_MENU   2
+#define VIEW_MENU     3
+#define HELP_MENU     4
+
 #define    SCANMODE_SUB 1
+#define    DETECTMODE_SUB 2
 
 class CMainFrame : 
     public CFrameWindowImpl<CMainFrame>, 
@@ -92,6 +99,7 @@ public:
 
     void    updateControlStatus();
     void    scanModeSelect(int mode);
+    void    detectModeSelect(int mode);
 
     LRESULT OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
     LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled);
@@ -117,16 +125,21 @@ protected:
     bool    useExpressMode;
     bool    inExpressMode;
     bool    support_motor_ctrl;
+    bool    support_detect_mode_ctrl;
 
     //lidar changeable parameters
     _u16     usingScanMode_;   //record the currently using scan mode
-
+    _u8      usingDetectMode_;
+    _u8      device_level_;
     //firmware 1.24
     std::vector<RplidarScanMode> modeVec_;
 
     rplidar_response_device_info_t devInfo;
+    rplidar_response_device_macaddr_info_t devMac;
 
     //subMenu of scan mode
     CMenu scanModeSubMenu_;
+    CMenu detectModeTypeSubMenu_;
     size_t scanModeMenuRecBegin_;
+    size_t detectModeMenuRecBegin_;
 };
