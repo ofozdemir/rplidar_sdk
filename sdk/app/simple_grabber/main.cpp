@@ -188,8 +188,7 @@ int main(int argc, const char * argv[]) {
             printf("%02X", devinfo.serialnum[pos]);
         }
 
-        printf("\n"
-                "Version: "RPLIDAR_SDK_VERSION"\n"
+        printf( //"Version: "RPLIDAR_SDK_VERSION"\n"
                 "Firmware Ver: %d.%02d\n"
                 "Hardware Rev: %d\n"
                 , devinfo.firmware_version>>8
